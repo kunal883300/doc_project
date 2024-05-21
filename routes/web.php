@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ScheduledSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,15 +25,19 @@ Route::get('/dashboard', DashboardController::class,)->middleware(['auth', 'veri
 
 Route::get('/applicant/dashboard', function () {
     return view('applicant.dashboard');
-})->middleware(['auth', 'verified'])->name('applicant.dashboard');
+})->middleware(['auth', 'role:applicant'])->name('applicant.dashboard');
 
 Route::get('/doc/dashboard', function () {
     return view('doc.dashboard');
-})->middleware(['auth', 'verified'])->name('doc.dashboard');
+})->middleware(['auth', 'role:doc'])->name('doc.dashboard');
 
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('admin.dashboard');
+})->middleware(['auth', 'role:admin'])->name('admin.dashboard');
+
+Route::resource('applicant/scheduled', ScheduledSessionController::class)
+->only(['index','create','store','destroy',])
+->middleware(['auth', 'role:applicant']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
