@@ -36,8 +36,12 @@ Route::get('/admin/dashboard', function () {
 })->middleware(['auth', 'role:admin'])->name('admin.dashboard');
 
 Route::resource('applicant/scheduled', ScheduledSessionController::class)
-->only(['index','create','store','destroy',])
+->only(['create','store','destroy',])
 ->middleware(['auth', 'role:applicant']);
+
+Route::get('doc/scheduled', [ScheduledSessionController::class, 'index'])
+    ->middleware(['auth', 'role:doc'])
+    ->name('scheduled.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

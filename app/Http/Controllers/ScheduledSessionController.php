@@ -13,7 +13,10 @@ class ScheduledSessionController extends Controller
      */
     public function index()
     {
-        //
+        $scheduledSessions = SessionType::get();
+        // dd($scheduledSessions);
+
+        return view('doc.upcoming', compact('scheduledSessions'));
     }
 
     /**
